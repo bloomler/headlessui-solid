@@ -4,13 +4,13 @@ An unofficial, community-maintained port of Headless UI 2 for SolidJS 2. It
 provides unstyled, accessible UI primitives while keeping Solid's native
 reactivity, DOM events, SSR and hydration model.
 
-The repository includes an extensive automated test suite covering component
-state machines, SSR, hydration, DOM behavior, real-browser behavior, package
-exports and public type contracts.
-
 > This project is not affiliated with or endorsed by Tailwind Labs. Headless UI
 > is a project of Tailwind Labs. This port preserves the upstream MIT license
 > and attribution.
+
+The repository includes an extensive automated test suite covering component
+state machines, SSR, hydration, DOM behavior, real-browser behavior, package
+exports and public type contracts.
 
 ## Motivation
 
@@ -26,12 +26,12 @@ included or redistributed here.
 ## Solid compatibility
 
 This release was developed and fully tested with SolidJS `2.0.0-beta.25`. Later
-SolidJS 2 betas, release candidates and stable versions may also work, and the
+SolidJS 2 betas, release candidates and stable versions may also work and the
 NPM peer range permits users to test them without an override. Those versions
 are not yet verified or guaranteed to be compatible.
 
 If a Solid release introduces a breaking change, please open a bug report with
-the `@bloomler/headlessui-solid`, `solid-js`, and `@solidjs/web` versions and a
+the `@bloomler/headlessui-solid`, `solid-js` and `@solidjs/web` versions and a
 minimal reproduction. The port will be updated when an incompatibility is
 identified.
 
@@ -131,5 +131,7 @@ deno task publish:jsr:check
 ```
 
 ## License and attribution
+
+Based on Headless UI version 2.2.10 for React.
 
 MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
