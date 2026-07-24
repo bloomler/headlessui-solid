@@ -79,6 +79,8 @@
     "test:browser:vitest": "deno run --node-modules-dir=auto -A npm:vitest@4.1.10 run --config vitest.solid.browser.config.ts",
     "build": "deno run --node-modules-dir=auto -A npm:vite@8.1.5 build --config vite.solid.config.ts --mode solid-browser && deno run --node-modules-dir=auto -A npm:vite@8.1.5 build --config vite.solid.config.ts --mode solid-server",
     "publish:jsr:check": "deno publish --dry-run --allow-dirty",
+    "release:npm-tags": "deno run --allow-net=registry.npmjs.org --allow-read=package.json --allow-run=deno scripts/sync-npm-dist-tags.ts",
+    "release:npm-tags:check": "deno run --allow-net=registry.npmjs.org --allow-read=package.json scripts/sync-npm-dist-tags.ts --check",
     "verify": "deno task fmt:check && deno task lint && deno task audit && deno task check && deno task check:package && deno task check:jsr-score && deno task test && deno task test:dom:jsdom && deno task publish:jsr:check",
     "verify:all": "deno task verify && deno task test:browser && deno task test:browser:vitest"
   }

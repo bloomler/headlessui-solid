@@ -94,6 +94,9 @@ jobs:
         if: steps.jsr_release.outputs.published != 'true'
         run: deno publish --allow-dirty
 
+      - name: Verify NPM distribution tags
+        run: deno task release:npm-tags:check
+
       - name: Create GitHub release
         shell: bash
         env:

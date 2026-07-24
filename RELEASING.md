@@ -25,9 +25,16 @@ scoped name `@bloomler/headlessui-solid`.
 3. Run `deno task verify:all`.
 4. Commit and push the release.
 5. Create and push the matching `v<version>` tag.
-6. Confirm the publish workflow completed and both registries expose the
+6. For a beta release, wait until NPM has published the version, then run
+   `deno task release:npm-tags` from an interactive terminal and approve the NPM
+   passkey prompt. This keeps both `latest` and `beta` on the new version
+   without storing a 2FA-bypass token.
+7. Rerun the publish workflow if its distribution-tag check was waiting for that
+   passkey step.
+8. Confirm the publish workflow completed and both registries expose the
    expected version.
 
 The workflow verifies the package, dry-runs both registries, and publishes with
 OIDC provenance. It can be safely rerun after a partial release because an
-existing immutable NPM version is skipped.
+existing immutable NPM version is skipped. The final NPM tag check prevents a
+release from completing while any required distribution tag is stale.

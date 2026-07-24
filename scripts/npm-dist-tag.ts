@@ -2,12 +2,18 @@ interface NpmManifest {
   version?: string;
 }
 
-export function npmDistTag(version: string): string {
+export type NpmDistTags = readonly [string, ...string[]];
+
+export function npmDistTags(version: string): NpmDistTags {
   const prerelease = version.match(
     /^\d+\.\d+\.\d+-([0-9A-Za-z-]+)(?:[.+]|$)/,
   )?.[1];
 
-  return prerelease === "beta" ? "latest" : prerelease ?? "latest";
+  return prerelease === "beta" ? ["latest", "beta"] : [prerelease ?? "latest"];
+}
+
+export function npmDistTag(version: string): string {
+  return npmDistTags(version)[0];
 }
 
 if (import.meta.main) {

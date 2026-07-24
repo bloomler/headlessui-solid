@@ -1,5 +1,6 @@
-import { npmDistTag } from "../../scripts/npm-dist-tag.ts";
+import { npmDistTag, npmDistTags } from "../../scripts/npm-dist-tag.ts";
 import { jsrVersionPublished } from "../../scripts/jsr-version-published.ts";
+import { pendingNpmDistTags } from "../../scripts/sync-npm-dist-tags.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -69,6 +70,9 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
   const jsrDryRunIndex = publish.indexOf("deno publish --dry-run");
   const npmPublishIndex = publish.indexOf("npm publish --tag");
   const jsrPublishIndex = publish.lastIndexOf("deno publish --allow-dirty");
+  const npmTagsCheckIndex = publish.indexOf(
+    "deno task release:npm-tags:check",
+  );
   const githubReleaseIndex = publish.indexOf("gh release create");
   assert(
     verifyIndex >= 0 &&
@@ -80,7 +84,8 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
       npmPublishIndex > npmDryRunIndex &&
       npmPublishIndex > jsrDryRunIndex &&
       jsrPublishIndex > npmPublishIndex &&
-      githubReleaseIndex > jsrPublishIndex,
+      npmTagsCheckIndex > jsrPublishIndex &&
+      githubReleaseIndex > npmTagsCheckIndex,
     "Publish workflow does not verify and dry-run both registries before publishing",
   );
   assert(
@@ -112,8 +117,43 @@ Deno.test("release versions map to explicit NPM distribution tags", () => {
     "Beta releases must update latest",
   );
   assert(
+    JSON.stringify(npmDistTags("0.1.0-beta.4")) ===
+      JSON.stringify(["latest", "beta"]),
+    "Beta releases must update both latest and beta",
+  );
+  assert(
+    JSON.stringify(
+      pendingNpmDistTags(
+        { latest: "0.1.0-beta.4", beta: "0.1.0-beta.3" },
+        "0.1.0-beta.4",
+      ),
+    ) === JSON.stringify(["beta"]),
+    "A stale beta tag must block release completion",
+  );
+  assert(
     npmDistTag("2.0.0-rc.1+build.7") === "rc",
     "Release candidates must use rc",
+  );
+});
+
+Deno.test("release guide includes the passkey-backed NPM tag finalizer", async () => {
+  const guide = await Deno.readTextFile("RELEASING.md");
+  const manifest = JSON.parse(
+    await Deno.readTextFile("deno.json"),
+  ) as DenoManifest;
+
+  assert(
+    guide.includes("deno task release:npm-tags") &&
+      guide.includes("passkey prompt") &&
+      guide.includes("both `latest` and `beta`"),
+    "Release guide omits the passkey-backed NPM tag finalizer",
+  );
+  assert(
+    manifest.tasks["release:npm-tags"]?.includes(
+      "scripts/sync-npm-dist-tags.ts",
+    ) &&
+      manifest.tasks["release:npm-tags:check"]?.includes("--check"),
+    "Deno tasks do not expose NPM tag synchronization and verification",
   );
 });
 
