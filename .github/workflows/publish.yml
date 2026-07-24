@@ -25,7 +25,7 @@ jobs:
       - name: Install Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.9.4
+          deno-version: v2.x
 
       - name: Install Node
         uses: actions/setup-node@v6
@@ -55,7 +55,9 @@ jobs:
           npm pkg set homepage="https://github.com/${GITHUB_REPOSITORY}#readme"
           npm pkg set bugs.url="https://github.com/${GITHUB_REPOSITORY}/issues"
           deno run --allow-env --allow-read scripts/check-release.ts "${GITHUB_REF_NAME}"
-          echo "NPM_TAG=$(deno eval --no-config 'const { version } = JSON.parse(await Deno.readTextFile(\"package.json\")); console.log(version.includes(\"-\") ? version.split(\"-\")[1].split(\".\")[0] : \"latest\")')" >> "$GITHUB_ENV"
+          NPM_TAG=$(deno run --allow-read scripts/npm-dist-tag.ts)
+          test -n "${NPM_TAG}"
+          echo "NPM_TAG=${NPM_TAG}" >> "$GITHUB_ENV"
 
       - name: Check NPM package
         run: npm publish --dry-run --tag "${NPM_TAG}"

@@ -23,7 +23,7 @@ jobs:
       - name: Install Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.9.4
+          deno-version: v2.x
 
       - name: Install Brave
         run: |

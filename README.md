@@ -106,6 +106,10 @@ The NPM package publishes separate browser and server ESM builds through
 conditional exports. Import from `@bloomler/headlessui-solid`; do not import
 internal `src` or `dist` paths.
 
+The repository includes an extensive automated test suite covering component
+state machines, SSR, hydration, DOM behavior, real-browser behavior, package
+exports and public type contracts.
+
 ## Development
 
 Install [Deno 2](https://deno.com/) and run:

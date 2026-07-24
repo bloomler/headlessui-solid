@@ -1,3 +1,5 @@
+import { npmDistTag } from "../../scripts/npm-dist-tag.ts";
+
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
@@ -55,13 +57,23 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
 
   const publish = await Deno.readTextFile(".github/workflows/publish.yml");
   const verifyIndex = publish.indexOf("deno task verify:all");
+  const npmTagIndex = publish.indexOf(
+    "NPM_TAG=$(deno run --allow-read scripts/npm-dist-tag.ts)",
+  );
+  const npmTagGuardIndex = publish.indexOf('test -n "${NPM_TAG}"');
+  const npmTagExportIndex = publish.indexOf(
+    'echo "NPM_TAG=${NPM_TAG}" >> "$GITHUB_ENV"',
+  );
   const npmDryRunIndex = publish.indexOf("npm publish --dry-run");
   const jsrDryRunIndex = publish.indexOf("deno publish --dry-run");
   const npmPublishIndex = publish.indexOf("npm publish --tag");
   const jsrPublishIndex = publish.lastIndexOf("deno publish --allow-dirty");
   assert(
     verifyIndex >= 0 &&
-      npmDryRunIndex > verifyIndex &&
+      npmTagIndex > verifyIndex &&
+      npmTagGuardIndex > npmTagIndex &&
+      npmTagExportIndex > npmTagGuardIndex &&
+      npmDryRunIndex > npmTagExportIndex &&
       jsrDryRunIndex > verifyIndex &&
       npmPublishIndex > npmDryRunIndex &&
       npmPublishIndex > jsrDryRunIndex &&
@@ -79,6 +91,18 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
         "if: steps.npm_release.outputs.published != 'true'",
       ),
     "Publish workflow cannot resume after NPM succeeds and JSR fails",
+  );
+});
+
+Deno.test("release versions map to explicit NPM distribution tags", () => {
+  assert(npmDistTag("1.2.3") === "latest", "Stable releases must use latest");
+  assert(
+    npmDistTag("0.1.0-beta.2") === "beta",
+    "Beta releases must use beta",
+  );
+  assert(
+    npmDistTag("2.0.0-rc.1+build.7") === "rc",
+    "Release candidates must use rc",
   );
 });
 

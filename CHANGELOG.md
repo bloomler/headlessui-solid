@@ -21,6 +21,8 @@ and this project follows [Semantic Versioning](https://semver.org/).
 - Exclude the TypeScript source tree from the NPM tarball.
 - Validate the exact NPM packlist and the bundled declarations as package
   consumers before release.
+- Make release distribution-tag calculation fail loudly instead of silently
+  passing an empty tag to NPM.
 
 ## [0.1.0-beta.1] - 2026-07-24
 
