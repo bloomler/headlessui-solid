@@ -109,7 +109,7 @@ internal `src` or `dist` paths.
 
 ## Development
 
-Install [Deno 2.9.4](https://deno.com/) and run:
+Install [Deno 2](https://deno.com/) and run:
 
 ```sh
 deno task verify
@@ -126,38 +126,6 @@ Useful commands:
 ```sh
 deno task publish:jsr:check
 ```
-
-## Publishing
-
-NPM and JSR both use the scoped name `@bloomler/headlessui-solid`. The package
-was unclaimed on both registries when this release setup was prepared, but the
-maintainer must create or control the `bloomler` scope before publishing.
-
-Before the first release:
-
-1. Create a public GitHub repository, push the release commit, and add its real
-   URL to `package.json`.
-2. Create the `bloomler` JSR scope and `headlessui-solid` package.
-3. In the JSR package settings:
-   - Use the description "Unofficial, community-maintained Headless UI port
-     for SolidJS 2."
-   - Mark Deno and web browsers as supported. Leave unverified runtimes as
-     unknown.
-   - Link the GitHub repository so GitHub Actions can publish with provenance.
-4. Create a protected GitHub environment named `release`.
-5. Publish the first NPM version interactively with
-   `npm publish --access public --tag beta`.
-6. In the NPM package settings, configure the GitHub Actions trusted publisher
-   with the GitHub owner and repository, workflow filename `publish.yml`,
-   environment `release`, and the `npm publish` action.
-7. Tag and push the matching version, for example `v0.1.0-beta.1`. The workflow
-   will recognize the bootstrapped NPM version and publish the matching JSR
-   version. Later tags publish new versions to both registries.
-
-The publish workflow checks both manifests, runs the full verification gate,
-performs NPM and JSR dry-runs, and then publishes with OIDC provenance. It can
-be safely rerun after a partial release because an existing immutable NPM
-version is skipped.
 
 ## License and attribution
 
