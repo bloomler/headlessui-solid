@@ -32,9 +32,12 @@ scoped name `@bloomler/headlessui-solid`.
 7. Rerun the publish workflow if its distribution-tag check was waiting for that
    passkey step.
 8. Confirm the publish workflow completed and both registries expose the
-   expected version.
+   expected version. The GitHub release body must match that version's complete
+   `CHANGELOG.md` section, and JSR must report a 100% package score.
 
 The workflow verifies the package, dry-runs both registries, and publishes with
 OIDC provenance. It can be safely rerun after a partial release because an
-existing immutable NPM version is skipped. The final NPM tag check prevents a
-release from completing while any required distribution tag is stale.
+existing immutable NPM version is skipped. It waits for JSR to report the exact
+stable version with a 100% score and extracts the GitHub release body from the
+matching versioned changelog section. The final NPM tag check prevents a release
+from completing while any required distribution tag is stale.

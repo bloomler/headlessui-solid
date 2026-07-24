@@ -20,6 +20,19 @@ interface DocOutput {
   nodes: Record<string, DocNode>;
 }
 
+interface JsrManifest {
+  name?: string;
+}
+
+interface JsrPackageMetadata {
+  description?: string | null;
+  githubRepository?: {
+    name?: string;
+    owner?: string;
+  } | null;
+  runtimeCompat?: Record<string, boolean | null>;
+}
+
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
@@ -53,6 +66,55 @@ assert(
   }`,
 );
 
+const manifest = JSON.parse(
+  await Deno.readTextFile("deno.json"),
+) as JsrManifest;
+const packageName = manifest.name?.match(/^@([^/]+)\/([^/]+)$/);
+assert(packageName !== undefined && packageName !== null, "Invalid JSR name");
+
+const [, scope, name] = packageName;
+const response = await fetch(
+  `https://api.jsr.io/scopes/${encodeURIComponent(scope)}/packages/${
+    encodeURIComponent(name)
+  }`,
+  {
+    headers: {
+      accept: "application/json",
+      "user-agent":
+        "headlessui-solid-release-check; https://github.com/bloomler/headlessui-solid",
+    },
+  },
+);
+assert(
+  response.ok,
+  `Could not read JSR package settings: ${response.status} ${response.statusText}`,
+);
+
+const metadata = await response.json() as JsrPackageMetadata;
+assert(metadata.description?.trim(), "JSR package description is missing");
+
+const compatibleRuntimes = Object.entries(metadata.runtimeCompat ?? {})
+  .filter(([, compatible]) => compatible)
+  .map(([runtime]) => runtime);
+assert(
+  compatibleRuntimes.length > 1,
+  "JSR must mark multiple runtimes as compatible",
+);
+assert(
+  metadata.githubRepository?.owner === "bloomler" &&
+    metadata.githubRepository.name === "headlessui-solid",
+  "JSR is not linked to the release repository",
+);
+
+const publishWorkflow = await Deno.readTextFile(
+  ".github/workflows/publish.yml",
+);
+assert(
+  publishWorkflow.includes("id-token: write") &&
+    publishWorkflow.includes("deno publish --allow-dirty"),
+  "JSR publication is not configured for OIDC provenance",
+);
+
 console.log(
-  `JSR documentation score inputs are complete: ${entrypoint.symbols.length} public symbols documented`,
+  `JSR 100% score prerequisites are complete: ${entrypoint.symbols.length} public symbols documented, ${compatibleRuntimes.length} runtimes compatible, description and OIDC provenance configured`,
 );

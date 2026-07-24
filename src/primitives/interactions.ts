@@ -121,7 +121,7 @@ export function createHover(options: InteractionOptions = {}) {
 }
 
 export function createActivePress(options: InteractionOptions = {}) {
-  const [pressed, setPressed] = createSignal(false);
+  const [pressed, setPressed] = createSignal(false, { ownedWrite: true });
   const disabled = options.disabled ?? (() => false);
 
   let target: HTMLElement | null = null;

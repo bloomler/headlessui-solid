@@ -1,5 +1,7 @@
 import { npmDistTag, npmDistTags } from "../../scripts/npm-dist-tag.ts";
 import { jsrVersionPublished } from "../../scripts/jsr-version-published.ts";
+import { hasPerfectPublishedJsrScore } from "../../scripts/check-published-jsr-score.ts";
+import { extractReleaseNotes } from "../../scripts/release-notes.ts";
 import { pendingNpmDistTags } from "../../scripts/sync-npm-dist-tags.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -70,6 +72,9 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
   const jsrDryRunIndex = publish.indexOf("deno publish --dry-run");
   const npmPublishIndex = publish.indexOf("npm publish --tag");
   const jsrPublishIndex = publish.lastIndexOf("deno publish --allow-dirty");
+  const jsrScoreCheckIndex = publish.indexOf(
+    "deno task release:jsr-score:check",
+  );
   const npmTagsCheckIndex = publish.indexOf(
     "deno task release:npm-tags:check",
   );
@@ -84,7 +89,8 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
       npmPublishIndex > npmDryRunIndex &&
       npmPublishIndex > jsrDryRunIndex &&
       jsrPublishIndex > npmPublishIndex &&
-      npmTagsCheckIndex > jsrPublishIndex &&
+      jsrScoreCheckIndex > jsrPublishIndex &&
+      npmTagsCheckIndex > jsrScoreCheckIndex &&
       githubReleaseIndex > npmTagsCheckIndex,
     "Publish workflow does not verify and dry-run both registries before publishing",
   );
@@ -105,8 +111,65 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
       ) &&
       publish.includes("gh release view") &&
       publish.includes("--verify-tag") &&
+      publish.includes(
+        "deno run --allow-read scripts/release-notes.ts > release-notes.md",
+      ) &&
+      publish.includes("--notes-file release-notes.md") &&
+      !publish.includes("--generate-notes") &&
       !publish.includes("--prerelease"),
     "Publish workflow cannot safely resume or create a GitHub release",
+  );
+});
+
+Deno.test("published JSR releases require the exact stable version at 100%", () => {
+  assert(
+    hasPerfectPublishedJsrScore(
+      { latestVersion: "0.1.0", score: 100 },
+      "0.1.0",
+    ),
+    "A perfect matching JSR release was rejected",
+  );
+  assert(
+    !hasPerfectPublishedJsrScore(
+      { latestVersion: "0.1.0", score: 99 },
+      "0.1.0",
+    ),
+    "An imperfect JSR score was accepted",
+  );
+  assert(
+    !hasPerfectPublishedJsrScore(
+      { latestVersion: "0.1.1", score: 100 },
+      "0.1.0",
+    ),
+    "A different JSR version was accepted",
+  );
+});
+
+Deno.test("GitHub release notes match the exact versioned changelog section", () => {
+  const changelog = `# Changelog
+
+## [Unreleased]
+
+## [0.1.0] - 2026-07-25
+
+### Fixed
+
+- Preserve these notes.
+
+## [0.1.0-beta.4] - 2026-07-24
+
+- Older notes.
+`;
+
+  assert(
+    extractReleaseNotes(changelog, "0.1.0") ===
+      `## [0.1.0] - 2026-07-25
+
+### Fixed
+
+- Preserve these notes.
+`,
+    "GitHub release notes do not exactly match the requested changelog section",
   );
 });
 
@@ -152,7 +215,10 @@ Deno.test("release guide includes the passkey-backed NPM tag finalizer", async (
     manifest.tasks["release:npm-tags"]?.includes(
       "scripts/sync-npm-dist-tags.ts",
     ) &&
-      manifest.tasks["release:npm-tags:check"]?.includes("--check"),
+      manifest.tasks["release:npm-tags:check"]?.includes("--check") &&
+      manifest.tasks["release:jsr-score:check"]?.includes(
+        "scripts/check-published-jsr-score.ts",
+      ),
     "Deno tasks do not expose NPM tag synchronization and verification",
   );
 });
@@ -197,7 +263,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     "Unexpected JSR package name",
   );
   assert(
-    npm.version === "0.1.0-beta.4" && npm.version === deno.version,
+    npm.version === "0.1.0" && npm.version === deno.version,
     "NPM and JSR release versions differ",
   );
   assert(deno.exports === "./src/index.ts", "JSR does not export source");

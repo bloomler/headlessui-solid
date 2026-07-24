@@ -1,5 +1,5 @@
 import { type JSX, render } from "@solidjs/web";
-import { createSignal, DEV, type Element, flush, Show } from "solid-js";
+import { createSignal, DEV, type Element, flush, For, Show } from "solid-js";
 import { afterEach, expect, test } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import {
@@ -475,6 +475,52 @@ test("anchor auto-portals and transition retains the menu through leave", async 
     timeout: 2_000,
   }).toBeNull();
   expect(document.activeElement?.id).toBe("anchor-trigger");
+  expect(diagnostics?.stop() ?? []).toEqual([]);
+});
+
+test("closed anchored menus can be removed from a keyed For", async () => {
+  const diagnostics = DEV?.diagnostics.capture();
+  let keepFirstTwo = () => {};
+
+  function Example() {
+    const [items, setItems] = createSignal([1, 2, 3, 4]);
+    keepFirstTwo = () => setItems((current) => current.slice(0, 2));
+
+    return (
+      <>
+        <output id="dynamic-menu-count">{items().length}</output>
+        <For each={items()}>
+          {(item) => (
+            <div data-dynamic-menu={item}>
+              <Menu>
+                <MenuButton>Menu {item}</MenuButton>
+                <MenuItems anchor="bottom" modal={false}>
+                  <MenuItem>Action {item}</MenuItem>
+                </MenuItems>
+              </Menu>
+            </div>
+          )}
+        </For>
+      </>
+    );
+  }
+
+  mount(() => <Example />);
+  await settle();
+
+  expect(document.querySelectorAll("[data-dynamic-menu]")).toHaveLength(4);
+  expect(
+    document.getElementById("headlessui-portal-root")?.childElementCount,
+  ).toBe(4);
+
+  keepFirstTwo();
+  await settle();
+
+  expect(document.getElementById("dynamic-menu-count")?.textContent).toBe("2");
+  expect(document.querySelectorAll("[data-dynamic-menu]")).toHaveLength(2);
+  expect(
+    document.getElementById("headlessui-portal-root")?.childElementCount,
+  ).toBe(2);
   expect(diagnostics?.stop() ?? []).toEqual([]);
 });
 

@@ -7,6 +7,26 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-07-25
+
+### Changed
+
+- Refresh the README motivation and simplify the usage examples to matching,
+  unversioned NPM and JSR imports.
+- Populate GitHub release bodies from the exact matching `CHANGELOG.md` section.
+- Require JSR to report a 100% package score before creating the GitHub release.
+
+### Fixed
+
+- Allow nested-portal and active-press lifecycle signals to write during owned
+  cleanup, preventing Solid 2 from halting when closed anchored menus are
+  removed from a reactive keyed `<For>`.
+
+### Security
+
+- Update the transitive development dependency `brace-expansion` to `5.0.8` to
+  address its unbounded-expansion denial-of-service advisory.
+
 ## [0.1.0-beta.4] - 2026-07-24
 
 ### Changed

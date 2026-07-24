@@ -14,18 +14,12 @@ exports and public type contracts.
 
 ## Motivation
 
-Headless UI has a mature component API and ecosystem. This port brings those
-component families to SolidJS 2 while using Solid-native reactivity, rendering,
-events, SSR and hydration.
-
-The API shape is deliberately familiar to make existing component patterns
-easier to migrate. Compatibility has been exercised against patterns used by
-Catalyst and Tailwind Plus Application UI, those commercial templates are not
-included or redistributed here.
+I have Tailwind Plus and I like the Catalyst & Application UI design,
+but also don't want to use React.
 
 ## Solid compatibility
 
-This release was developed and fully tested with SolidJS `2.0.0-beta.25`. Later
+This release was fully tested with SolidJS `2.0.0-beta.25`. Later
 SolidJS 2 betas, release candidates and stable versions may also work and the
 NPM peer range permits users to test them without an override. Those versions
 are not yet verified or guaranteed to be compatible.
@@ -73,31 +67,13 @@ For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease, the
 NPM:
 
 ```tsx
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@bloomler/headlessui-solid";
-
-export function AccountMenu() {
-  return (
-    <Menu>
-      <MenuButton>Account</MenuButton>
-      <MenuItems>
-        <MenuItem as="a" href="/profile">
-          Profile
-        </MenuItem>
-      </MenuItems>
-    </Menu>
-  );
-}
+import { Button } from "@bloomler/headlessui-solid";
 ```
 
 JSR:
 
-```ts
-import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.4";
+```tsx
+import { Button } from "jsr:@bloomler/headlessui-solid";
 ```
 
 ## Components

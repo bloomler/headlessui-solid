@@ -291,7 +291,9 @@ export function useNestedPortals(): readonly [
   ParentComponent,
 ] {
   const parent = useContext(PortalParentContext);
-  const [portals, setPortals] = createSignal<readonly HTMLElement[]>([]);
+  const [portals, setPortals] = createSignal<readonly HTMLElement[]>([], {
+    ownedWrite: true,
+  });
   const registered = new Set<HTMLElement>();
 
   const unregister = (portal: HTMLElement) => {

@@ -94,6 +94,9 @@ jobs:
         if: steps.jsr_release.outputs.published != 'true'
         run: deno publish --allow-dirty
 
+      - name: Verify JSR package score
+        run: deno task release:jsr-score:check
+
       - name: Verify NPM distribution tags
         run: deno task release:npm-tags:check
 
@@ -107,8 +110,9 @@ jobs:
             exit 0
           fi
 
+          deno run --allow-read scripts/release-notes.ts > release-notes.md
           gh release create "${GITHUB_REF_NAME}" \
             --repo "${GITHUB_REPOSITORY}" \
             --verify-tag \
-            --generate-notes \
+            --notes-file release-notes.md \
             --title "${GITHUB_REF_NAME}"
