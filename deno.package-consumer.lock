@@ -1,0 +1,67 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:@floating-ui/dom@1.8.0": "1.8.0",
+    "npm:@solidjs/signals@2.0.0-beta.25": "2.0.0-beta.25",
+    "npm:@solidjs/web@2.0.0-beta.25": "2.0.0-beta.25_solid-js@2.0.0-beta.25",
+    "npm:solid-js@2.0.0-beta.25": "2.0.0-beta.25"
+  },
+  "npm": {
+    "@floating-ui/core@1.8.0": {
+      "integrity": "sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==",
+      "dependencies": [
+        "@floating-ui/utils"
+      ]
+    },
+    "@floating-ui/dom@1.8.0": {
+      "integrity": "sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==",
+      "dependencies": [
+        "@floating-ui/core",
+        "@floating-ui/utils"
+      ]
+    },
+    "@floating-ui/utils@0.2.12": {
+      "integrity": "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="
+    },
+    "@solidjs/signals@2.0.0-beta.25": {
+      "integrity": "sha512-Y4oSSCwt1rouvgz9LZxb3Wx2yLFMCjNhad/M2YZxOL4x7+sW6ST2BwI8ZP5vzEtyHUQX+5Pn5ltqkalaHjvlVA=="
+    },
+    "@solidjs/web@2.0.0-beta.25_solid-js@2.0.0-beta.25": {
+      "integrity": "sha512-ZuEhEpTXyUU6ERDGuZkShM1VdDoL6ib02pClRNjJmWR3MC5nvPDVXVJxsiUq/xBBQGX5XkzuWIQbE0i51ZsfGA==",
+      "dependencies": [
+        "seroval",
+        "seroval-plugins",
+        "solid-js"
+      ]
+    },
+    "csstype@3.2.3": {
+      "integrity": "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="
+    },
+    "seroval-plugins@1.5.6_seroval@1.5.6": {
+      "integrity": "sha512-HXuLAX2pu/UByPpaeo/TaMfvMIi+1QqIoPJYCcAtU8QkVNwgR6MPlGuCQTErV1JwraaMbYaWVIBX7mppzGLATQ==",
+      "dependencies": [
+        "seroval"
+      ]
+    },
+    "seroval@1.5.6": {
+      "integrity": "sha512-rVQVWjjSvlINzaQPZH5JFqsqEsIWdTxY3iJZCnTL/5gQbXIRooVZKI60tVCkOVfzcRPejboxO2t0P89dg5mQaA=="
+    },
+    "solid-js@2.0.0-beta.25": {
+      "integrity": "sha512-jWyMo3Z+Gv2IX6UvUvwBYSPM8/l9fm3sKM2dORTtC5xFrD4UTyJQBx9YdcawBalGQRXGX2xf+axkyBUUIVsw9Q==",
+      "dependencies": [
+        "@solidjs/signals",
+        "csstype",
+        "seroval",
+        "seroval-plugins"
+      ]
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:@floating-ui/dom@1.8.0",
+      "npm:@solidjs/signals@2.0.0-beta.25",
+      "npm:@solidjs/web@2.0.0-beta.25",
+      "npm:solid-js@2.0.0-beta.25"
+    ]
+  }
+}

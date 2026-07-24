@@ -1,0 +1,85 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.4
+
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install Brave
+        run: |
+          sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+          sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
+          sudo apt-get update
+          sudo apt-get install --yes brave-browser
+
+      - name: Verify package
+        run: deno task verify:all
+        env:
+          BRAVE_ORIGIN_EXECUTABLE: /usr/bin/brave-browser
+          CI: true
+
+      - name: Prepare release metadata
+        shell: bash
+        run: |
+          npm pkg set repository.type=git
+          npm pkg set repository.url="git+https://github.com/${GITHUB_REPOSITORY}.git"
+          npm pkg set homepage="https://github.com/${GITHUB_REPOSITORY}#readme"
+          npm pkg set bugs.url="https://github.com/${GITHUB_REPOSITORY}/issues"
+          deno run --allow-env --allow-read scripts/check-release.ts "${GITHUB_REF_NAME}"
+          echo "NPM_TAG=$(deno eval --no-config 'const { version } = JSON.parse(await Deno.readTextFile(\"package.json\")); console.log(version.includes(\"-\") ? version.split(\"-\")[1].split(\".\")[0] : \"latest\")')" >> "$GITHUB_ENV"
+
+      - name: Check NPM package
+        run: npm publish --dry-run --tag "${NPM_TAG}"
+
+      - name: Check JSR package
+        run: deno publish --dry-run --allow-dirty
+
+      - name: Check NPM release status
+        id: npm_release
+        shell: bash
+        run: |
+          NPM_NAME=$(deno eval --no-config 'const { name } = JSON.parse(await Deno.readTextFile("package.json")); console.log(name)')
+          NPM_VERSION=$(deno eval --no-config 'const { version } = JSON.parse(await Deno.readTextFile("package.json")); console.log(version)')
+          PUBLISHED_VERSION=$(npm view "${NPM_NAME}@${NPM_VERSION}" version --json 2>/dev/null || true)
+          if [[ "${PUBLISHED_VERSION}" == "\"${NPM_VERSION}\"" ]]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "${NPM_NAME}@${NPM_VERSION} is already published; skipping the immutable NPM version."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to NPM
+        if: steps.npm_release.outputs.published != 'true'
+        run: npm publish --tag "${NPM_TAG}"
+
+      - name: Publish to JSR
+        run: deno publish --allow-dirty

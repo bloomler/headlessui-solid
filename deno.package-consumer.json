@@ -1,0 +1,20 @@
+{
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web",
+    "lib": ["dom", "dom.iterable", "deno.ns"]
+  },
+  "imports": {
+    "@floating-ui/dom": "npm:@floating-ui/dom@1.8.0",
+    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.25",
+    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.25",
+    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.25/",
+    "@bloomler/headlessui-solid": "./src/index.ts",
+    "solid-js": "npm:solid-js@2.0.0-beta.25"
+  },
+  "lock": {
+    "frozen": true,
+    "path": "./deno.package-consumer.lock"
+  }
+}

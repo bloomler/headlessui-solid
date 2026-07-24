@@ -1,0 +1,82 @@
+{
+  "name": "@bloomler/headlessui-solid",
+  "version": "0.1.0-beta.1",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": [
+      "CHANGELOG.md",
+      "LICENSE",
+      "NOTICE.md",
+      "README.md",
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ]
+  },
+  "nodeModulesDir": "none",
+  "lock": {
+    "frozen": true,
+    "path": "./deno.lock"
+  },
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web",
+    "lib": ["dom", "dom.iterable", "deno.ns"]
+  },
+  "imports": {
+    "@floating-ui/dom": "npm:@floating-ui/dom@1.8.0",
+    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.25",
+    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.25",
+    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.25/",
+    "@vitest/browser": "npm:@vitest/browser@4.1.10",
+    "@vitest/browser-playwright": "npm:@vitest/browser-playwright@4.1.10",
+    "@bloomler/headlessui-solid": "./src/index.ts",
+    "jsdom": "npm:jsdom@29.1.1",
+    "npm-packlist": "npm:npm-packlist@10.0.4",
+    "playwright": "npm:playwright@1.61.1",
+    "solid-js": "npm:solid-js@2.0.0-beta.25",
+    "vite": "npm:vite@8.1.5",
+    "vite-plugin-solid": "npm:vite-plugin-solid@3.0.0-next.16",
+    "vitest": "npm:vitest@4.1.10",
+    "vitest/": "npm:/vitest@4.1.10/"
+  },
+  "fmt": {
+    "include": [
+      "deno.json",
+      "deno.package-consumer.json",
+      "scripts",
+      "src",
+      "tests",
+      "vite.solid.config.ts",
+      "vitest.solid.browser.config.ts",
+      "vitest.solid.dom.config.ts"
+    ]
+  },
+  "lint": {
+    "include": [
+      "scripts",
+      "src",
+      "tests",
+      "vite.solid.config.ts",
+      "vitest.solid.browser.config.ts",
+      "vitest.solid.dom.config.ts"
+    ]
+  },
+  "tasks": {
+    "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
+    "lint": "deno lint",
+    "audit": "deno audit",
+    "check": "deno check --node-modules-dir=none src/index.ts tests scripts/brave-origin.ts vite.solid.config.ts vitest.solid.browser.config.ts vitest.solid.dom.config.ts",
+    "check:package": "deno check --config deno.package-consumer.json tests/public-api.types.tsx",
+    "check:jsr-score": "deno doc --json src/index.ts | deno run --allow-read scripts/check-jsr-score.ts",
+    "test": "deno task build && deno test --node-modules-dir=auto -A tests/deno",
+    "test:dom": "deno task test:dom:jsdom",
+    "test:dom:jsdom": "deno run --node-modules-dir=auto -A npm:vitest@4.1.10 run --config vitest.solid.dom.config.ts",
+    "test:browser": "deno run --node-modules-dir=auto -A scripts/brave-origin.ts",
+    "test:browser:vitest": "deno run --node-modules-dir=auto -A npm:vitest@4.1.10 run --config vitest.solid.browser.config.ts",
+    "build": "deno run --node-modules-dir=auto -A npm:vite@8.1.5 build --config vite.solid.config.ts --mode solid-browser && deno run --node-modules-dir=auto -A npm:vite@8.1.5 build --config vite.solid.config.ts --mode solid-server",
+    "publish:jsr:check": "deno publish --dry-run --allow-dirty",
+    "verify": "deno task fmt:check && deno task lint && deno task audit && deno task check && deno task check:package && deno task check:jsr-score && deno task test && deno task test:dom:jsdom && deno task publish:jsr:check",
+    "verify:all": "deno task verify && deno task test:browser && deno task test:browser:vitest"
+  }
+}
