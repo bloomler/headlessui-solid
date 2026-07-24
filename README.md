@@ -40,7 +40,7 @@ identified.
 From NPM:
 
 ```sh
-npm install @bloomler/headlessui-solid@0.1.0-beta.3
+npm i @bloomler/headlessui-solid
 ```
 
 Your application must provide matching SolidJS 2 `solid-js` and `@solidjs/web`
@@ -49,7 +49,7 @@ packages. Beta.25 is the currently verified baseline.
 From JSR:
 
 ```sh
-deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.3
+deno add jsr:@bloomler/headlessui-solid
 ```
 
 For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease, the
