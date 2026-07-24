@@ -7,9 +7,16 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0-beta.3] - 2026-07-24
+
 ### Added
 
 - Create a GitHub release after both registries publish successfully.
+
+### Changed
+
+- Include the complete TypeScript source tree alongside the NPM distribution
+  builds while preserving the root package as the only public entry point.
 
 ### Fixed
 

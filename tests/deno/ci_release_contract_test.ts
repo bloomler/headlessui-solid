@@ -108,7 +108,7 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
 Deno.test("release versions map to explicit NPM distribution tags", () => {
   assert(npmDistTag("1.2.3") === "latest", "Stable releases must use latest");
   assert(
-    npmDistTag("0.1.0-beta.2") === "beta",
+    npmDistTag("0.1.0-beta.3") === "beta",
     "Beta releases must use beta",
   );
   assert(
@@ -120,22 +120,22 @@ Deno.test("release versions map to explicit NPM distribution tags", () => {
 Deno.test("JSR release metadata detects immutable published versions", () => {
   const metadata = {
     versions: {
-      "0.1.0-beta.2": {
+      "0.1.0-beta.3": {
         createdAt: "2026-07-24T03:15:33.513191Z",
       },
     },
   };
 
   assert(
-    jsrVersionPublished(metadata, "0.1.0-beta.2"),
+    jsrVersionPublished(metadata, "0.1.0-beta.3"),
     "Published JSR version was not detected",
   );
   assert(
-    !jsrVersionPublished(metadata, "0.1.0-beta.3"),
+    !jsrVersionPublished(metadata, "0.1.0-beta.4"),
     "Unpublished JSR version was reported as published",
   );
   assert(
-    !jsrVersionPublished({}, "0.1.0-beta.2"),
+    !jsrVersionPublished({}, "0.1.0-beta.3"),
     "Missing JSR metadata was reported as published",
   );
 });
@@ -157,7 +157,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     "Unexpected JSR package name",
   );
   assert(
-    npm.version === "0.1.0-beta.2" && npm.version === deno.version,
+    npm.version === "0.1.0-beta.3" && npm.version === deno.version,
     "NPM and JSR release versions differ",
   );
   assert(deno.exports === "./src/index.ts", "JSR does not export source");
@@ -215,8 +215,8 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     assert((await Deno.stat(file)).isFile, `Repository is missing ${file}`);
   }
   assert(
-    npm.files?.includes("dist") && !npm.files.includes("src"),
-    "NPM must publish built artifacts instead of source",
+    npm.files?.includes("dist") && npm.files.includes("src"),
+    "NPM must publish both built artifacts and their source",
   );
 
   const changelog = await Deno.readTextFile("CHANGELOG.md");

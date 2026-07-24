@@ -212,9 +212,25 @@ Deno.test("the packed package contains every public runtime and type target", as
       "dist/index.d.ts.map",
       "dist/index.mjs",
       "dist/index.mjs.map",
+      "src/index.ts",
     ]
   ) {
     assert(files.has(expected), `Packed package omitted ${expected}`);
+  }
+  const sourceFiles: string[] = [];
+  async function collectSources(directory: string): Promise<void> {
+    for await (const entry of Deno.readDir(directory)) {
+      const path = `${directory}/${entry.name}`;
+      if (entry.isDirectory) {
+        await collectSources(path);
+      } else if (entry.isFile && /\.(?:tsx?|mts|cts)$/.test(entry.name)) {
+        sourceFiles.push(path);
+      }
+    }
+  }
+  await collectSources("src");
+  for (const sourceFile of sourceFiles) {
+    assert(files.has(sourceFile), `Packed package omitted ${sourceFile}`);
   }
   const declarations = [...files].filter((file) =>
     /\.d\.(?:ts|mts|cts)$/.test(file)
@@ -224,8 +240,9 @@ Deno.test("the packed package contains every public runtime and type target", as
     `Expected one bundled declaration file, got ${declarations.join(", ")}`,
   );
   assert(
-    ![...files].some((file) => file.startsWith("src/")),
-    "Packed package unexpectedly contains source files",
+    [...files].filter((file) => file.startsWith("src/")).length ===
+      sourceFiles.length,
+    "Packed package source tree differs from the repository source tree",
   );
   assert(
     ![...files].some((file) => file.startsWith("tests/")),

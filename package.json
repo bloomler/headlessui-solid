@@ -1,6 +1,6 @@
 {
   "name": "@bloomler/headlessui-solid",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "Unofficial, community-maintained Headless UI port for SolidJS 2.",
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "LICENSE",
     "NOTICE.md",
     "README.md",
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "deno task build",

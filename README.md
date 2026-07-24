@@ -40,7 +40,7 @@ identified.
 From NPM:
 
 ```sh
-npm install @bloomler/headlessui-solid@0.1.0-beta.2
+npm install @bloomler/headlessui-solid@0.1.0-beta.3
 ```
 
 Your application must provide matching SolidJS 2 `solid-js` and `@solidjs/web`
@@ -49,7 +49,7 @@ packages. Beta.25 is the currently verified baseline.
 From JSR:
 
 ```sh
-deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.2
+deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.3
 ```
 
 For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease, the
@@ -97,7 +97,7 @@ export function AccountMenu() {
 JSR:
 
 ```ts
-import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.2";
+import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.3";
 ```
 
 ## Components
@@ -107,8 +107,9 @@ Fieldset, FocusTrap, Input, Label, Legend, Listbox, Menu, Popover, Portal,
 RadioGroup, Select, Switch, Tabs, Textarea, and Transition families.
 
 The NPM package publishes separate browser and server ESM builds through
-conditional exports. Import from `@bloomler/headlessui-solid`; do not import
-internal `src` or `dist` paths.
+conditional exports and includes their TypeScript source for inspection and
+source-map resolution. Import from `@bloomler/headlessui-solid`; `src` and
+`dist` remain internal implementation paths.
 
 ## Development
 
