@@ -14,10 +14,10 @@
   "sideEffects": false,
   "main": "./dist/index.mjs",
   "module": "./dist/index.browser.mjs",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "browser": "./dist/index.browser.mjs",
       "deno": "./dist/index.mjs",
       "worker": "./dist/index.mjs",
@@ -31,8 +31,7 @@
     "LICENSE",
     "NOTICE.md",
     "README.md",
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "deno task build",

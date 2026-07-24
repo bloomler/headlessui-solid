@@ -10,7 +10,7 @@
     "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.25",
     "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.25",
     "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.25/",
-    "@bloomler/headlessui-solid": "./src/index.ts",
+    "@bloomler/headlessui-solid": "./dist/index.d.ts",
     "solid-js": "npm:solid-js@2.0.0-beta.25"
   },
   "lock": {

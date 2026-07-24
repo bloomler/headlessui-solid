@@ -137,8 +137,8 @@ Deno.test("the package routes browser and server consumers to matching builds", 
     "Expected the generic ESM fallback to receive the DOM build",
   );
   assert(
-    entry.types === "./src/index.ts",
-    "Expected consumers to retain the source declarations",
+    entry.types === "./dist/index.d.ts",
+    "Expected consumers to receive built declarations",
   );
   for (const condition of ["deno", "node", "worker"]) {
     assert(
@@ -208,21 +208,39 @@ Deno.test("the packed package contains every public runtime and type target", as
       "package.json",
       "dist/index.browser.mjs",
       "dist/index.browser.mjs.map",
+      "dist/index.d.ts",
+      "dist/index.d.ts.map",
       "dist/index.mjs",
       "dist/index.mjs.map",
-      "src/index.ts",
     ]
   ) {
     assert(files.has(expected), `Packed package omitted ${expected}`);
   }
+  const declarations = [...files].filter((file) =>
+    /\.d\.(?:ts|mts|cts)$/.test(file)
+  );
   assert(
-    [...files].some((file) => file.startsWith("src/components/")),
-    "Packed package omitted component type sources",
+    JSON.stringify(declarations) === JSON.stringify(["dist/index.d.ts"]),
+    `Expected one bundled declaration file, got ${declarations.join(", ")}`,
+  );
+  assert(
+    ![...files].some((file) => file.startsWith("src/")),
+    "Packed package unexpectedly contains source files",
   );
   assert(
     ![...files].some((file) => file.startsWith("tests/")),
     "Packed package unexpectedly contains tests",
   );
+
+  for (const file of declarations) {
+    const declaration = await Deno.readTextFile(
+      `${packageDirectory}/${file}`,
+    );
+    assert(
+      !/(["'])\.\.?\/[^"'\r\n]+\.(?:tsx?|mts|cts)\1/.test(declaration),
+      `${file} references an unpublished TypeScript source path`,
+    );
+  }
 });
 
 Deno.test("the browser distribution is tree-shaken and executes as a package consumer", async () => {

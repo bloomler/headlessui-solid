@@ -1,7 +1,7 @@
 # Headless UI Solid
 
-An unofficial, community-maintained port of Headless UI 2.2.10 for SolidJS 2.
-It provides unstyled, accessible UI primitives while keeping Solid's native
+An unofficial, community-maintained port of Headless UI 2 for SolidJS 2. It
+provides unstyled, accessible UI primitives while keeping Solid's native
 reactivity, DOM events, SSR and hydration model.
 
 > This project is not affiliated with or endorsed by Tailwind Labs. Headless UI
@@ -21,10 +21,10 @@ included or redistributed here.
 
 ## Solid compatibility
 
-This release was developed and fully tested with SolidJS `2.0.0-beta.25`.
-Later SolidJS 2 betas, release candidates and stable versions may also work,
-and the NPM peer range permits users to test them without an override. Those
-versions are not yet verified or guaranteed to be compatible.
+This release was developed and fully tested with SolidJS `2.0.0-beta.25`. Later
+SolidJS 2 betas, release candidates and stable versions may also work, and the
+NPM peer range permits users to test them without an override. Those versions
+are not yet verified or guaranteed to be compatible.
 
 If a Solid release introduces a breaking change, please open a bug report with
 the `@bloomler/headlessui-solid`, `solid-js`, and `@solidjs/web` versions and a
@@ -48,8 +48,8 @@ From JSR:
 deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.1
 ```
 
-For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease,
-the `next` channel tracks its coordinated runtime:
+For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease, the
+`next` channel tracks its coordinated runtime:
 
 ```json
 {

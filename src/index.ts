@@ -2,7 +2,7 @@
  * Accessible, unstyled UI components for SolidJS 2.
  *
  * This package is an unofficial, community-maintained SolidJS port of
- * Headless UI 2.2.10. Components use Solid-native reactivity, events, SSR,
+ * Headless UI 2. Components use Solid-native reactivity, events, SSR,
  * and hydration.
  *
  * @example Create an accessible menu.

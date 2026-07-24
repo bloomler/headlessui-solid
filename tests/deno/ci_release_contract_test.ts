@@ -124,7 +124,10 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
   }
 
   const entry = npm.exports?.["."];
-  assert(entry?.types === "./src/index.ts", "NPM types do not target source");
+  assert(
+    entry?.types === "./dist/index.d.ts",
+    "NPM types do not target the declaration build",
+  );
   assert(
     entry?.browser === "./dist/index.browser.mjs" &&
       entry.import === "./dist/index.browser.mjs" &&
@@ -153,6 +156,10 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     );
     assert((await Deno.stat(file)).isFile, `Repository is missing ${file}`);
   }
+  assert(
+    npm.files?.includes("dist") && !npm.files.includes("src"),
+    "NPM must publish built artifacts instead of source",
+  );
 
   const changelog = await Deno.readTextFile("CHANGELOG.md");
   assert(
