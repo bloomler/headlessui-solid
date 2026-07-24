@@ -132,6 +132,4 @@ deno task publish:jsr:check
 
 ## License and attribution
 
-Based on Headless UI version 2.2.10 for React.
-
 MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
