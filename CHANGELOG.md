@@ -7,6 +7,14 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Create a GitHub release after both registries publish successfully.
+
+### Fixed
+
+- Make release retries skip immutable JSR versions as well as NPM versions.
+
 ## [0.1.0-beta.2] - 2026-07-24
 
 ### Changed

@@ -1,4 +1,5 @@
 import { npmDistTag } from "../../scripts/npm-dist-tag.ts";
+import { jsrVersionPublished } from "../../scripts/jsr-version-published.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -68,6 +69,7 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
   const jsrDryRunIndex = publish.indexOf("deno publish --dry-run");
   const npmPublishIndex = publish.indexOf("npm publish --tag");
   const jsrPublishIndex = publish.lastIndexOf("deno publish --allow-dirty");
+  const githubReleaseIndex = publish.indexOf("gh release create");
   assert(
     verifyIndex >= 0 &&
       npmTagIndex > verifyIndex &&
@@ -77,20 +79,29 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
       jsrDryRunIndex > verifyIndex &&
       npmPublishIndex > npmDryRunIndex &&
       npmPublishIndex > jsrDryRunIndex &&
-      jsrPublishIndex > npmPublishIndex,
+      jsrPublishIndex > npmPublishIndex &&
+      githubReleaseIndex > jsrPublishIndex,
     "Publish workflow does not verify and dry-run both registries before publishing",
   );
   assert(
-    publish.includes("id-token: write") &&
+    publish.includes("contents: write") &&
+      publish.includes("id-token: write") &&
       !publish.includes("NODE_AUTH_TOKEN"),
-    "Publish workflow does not use tokenless OIDC",
+    "Publish workflow lacks tokenless OIDC or GitHub release permissions",
   );
   assert(
     publish.includes("id: npm_release") &&
       publish.includes(
         "if: steps.npm_release.outputs.published != 'true'",
-      ),
-    "Publish workflow cannot resume after NPM succeeds and JSR fails",
+      ) &&
+      publish.includes("id: jsr_release") &&
+      publish.includes(
+        "if: steps.jsr_release.outputs.published != 'true'",
+      ) &&
+      publish.includes("gh release view") &&
+      publish.includes("--verify-tag") &&
+      publish.includes("--prerelease"),
+    "Publish workflow cannot safely resume or create a GitHub release",
   );
 });
 
@@ -103,6 +114,29 @@ Deno.test("release versions map to explicit NPM distribution tags", () => {
   assert(
     npmDistTag("2.0.0-rc.1+build.7") === "rc",
     "Release candidates must use rc",
+  );
+});
+
+Deno.test("JSR release metadata detects immutable published versions", () => {
+  const metadata = {
+    versions: {
+      "0.1.0-beta.2": {
+        createdAt: "2026-07-24T03:15:33.513191Z",
+      },
+    },
+  };
+
+  assert(
+    jsrVersionPublished(metadata, "0.1.0-beta.2"),
+    "Published JSR version was not detected",
+  );
+  assert(
+    !jsrVersionPublished(metadata, "0.1.0-beta.3"),
+    "Unpublished JSR version was reported as published",
+  );
+  assert(
+    !jsrVersionPublished({}, "0.1.0-beta.2"),
+    "Missing JSR metadata was reported as published",
   );
 });
 
