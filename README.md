@@ -4,6 +4,10 @@ An unofficial, community-maintained port of Headless UI 2 for SolidJS 2. It
 provides unstyled, accessible UI primitives while keeping Solid's native
 reactivity, DOM events, SSR and hydration model.
 
+The repository includes an extensive automated test suite covering component
+state machines, SSR, hydration, DOM behavior, real-browser behavior, package
+exports and public type contracts.
+
 > This project is not affiliated with or endorsed by Tailwind Labs. Headless UI
 > is a project of Tailwind Labs. This port preserves the upstream MIT license
 > and attribution.
@@ -105,10 +109,6 @@ RadioGroup, Select, Switch, Tabs, Textarea, and Transition families.
 The NPM package publishes separate browser and server ESM builds through
 conditional exports. Import from `@bloomler/headlessui-solid`; do not import
 internal `src` or `dist` paths.
-
-The repository includes an extensive automated test suite covering component
-state machines, SSR, hydration, DOM behavior, real-browser behavior, package
-exports and public type contracts.
 
 ## Development
 
