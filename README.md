@@ -4,7 +4,6 @@ An unofficial, community-maintained port of Headless UI 2.2.10 for SolidJS 2.
 It provides unstyled, accessible UI primitives while keeping Solid's native
 reactivity, DOM events, SSR and hydration model.
 
-> [!IMPORTANT]
 > This project is not affiliated with or endorsed by Tailwind Labs. Headless UI
 > is a project of Tailwind Labs. This port preserves the upstream MIT license
 > and attribution.
