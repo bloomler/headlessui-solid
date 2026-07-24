@@ -248,6 +248,14 @@ Deno.test("the packed package contains every public runtime and type target", as
     ![...files].some((file) => file.startsWith("tests/")),
     "Packed package unexpectedly contains tests",
   );
+  const readme = await Deno.readTextFile(
+    `${packageDirectory}/README.md`,
+  );
+  assert(
+    /^npm i @bloomler\/headlessui-solid$/m.test(readme) &&
+      /^deno add jsr:@bloomler\/headlessui-solid$/m.test(readme),
+    "Packed README does not use the default NPM and JSR release channels",
+  );
 
   for (const file of declarations) {
     const declaration = await Deno.readTextFile(

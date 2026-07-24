@@ -104,14 +104,8 @@ jobs:
             exit 0
           fi
 
-          RELEASE_FLAGS=()
-          if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
-            RELEASE_FLAGS+=(--prerelease --latest=false)
-          fi
-
           gh release create "${GITHUB_REF_NAME}" \
             --repo "${GITHUB_REPOSITORY}" \
             --verify-tag \
             --generate-notes \
-            --title "${GITHUB_REF_NAME}" \
-            "${RELEASE_FLAGS[@]}"
+            --title "${GITHUB_REF_NAME}"

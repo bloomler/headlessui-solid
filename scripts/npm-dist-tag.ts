@@ -7,7 +7,7 @@ export function npmDistTag(version: string): string {
     /^\d+\.\d+\.\d+-([0-9A-Za-z-]+)(?:[.+]|$)/,
   )?.[1];
 
-  return prerelease ?? "latest";
+  return prerelease === "beta" ? "latest" : prerelease ?? "latest";
 }
 
 if (import.meta.main) {

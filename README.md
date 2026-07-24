@@ -97,7 +97,7 @@ export function AccountMenu() {
 JSR:
 
 ```ts
-import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.3";
+import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.4";
 ```
 
 ## Components

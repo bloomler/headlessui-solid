@@ -100,7 +100,7 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
       ) &&
       publish.includes("gh release view") &&
       publish.includes("--verify-tag") &&
-      publish.includes("--prerelease"),
+      !publish.includes("--prerelease"),
     "Publish workflow cannot safely resume or create a GitHub release",
   );
 });
@@ -108,8 +108,8 @@ Deno.test("CI and release run the complete Solid package gate", async () => {
 Deno.test("release versions map to explicit NPM distribution tags", () => {
   assert(npmDistTag("1.2.3") === "latest", "Stable releases must use latest");
   assert(
-    npmDistTag("0.1.0-beta.3") === "beta",
-    "Beta releases must use beta",
+    npmDistTag("0.1.0-beta.4") === "latest",
+    "Beta releases must update latest",
   );
   assert(
     npmDistTag("2.0.0-rc.1+build.7") === "rc",
@@ -120,22 +120,22 @@ Deno.test("release versions map to explicit NPM distribution tags", () => {
 Deno.test("JSR release metadata detects immutable published versions", () => {
   const metadata = {
     versions: {
-      "0.1.0-beta.3": {
+      "0.1.0-beta.4": {
         createdAt: "2026-07-24T03:15:33.513191Z",
       },
     },
   };
 
   assert(
-    jsrVersionPublished(metadata, "0.1.0-beta.3"),
+    jsrVersionPublished(metadata, "0.1.0-beta.4"),
     "Published JSR version was not detected",
   );
   assert(
-    !jsrVersionPublished(metadata, "0.1.0-beta.4"),
+    !jsrVersionPublished(metadata, "0.1.0-beta.5"),
     "Unpublished JSR version was reported as published",
   );
   assert(
-    !jsrVersionPublished({}, "0.1.0-beta.3"),
+    !jsrVersionPublished({}, "0.1.0-beta.4"),
     "Missing JSR metadata was reported as published",
   );
 });
@@ -157,7 +157,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     "Unexpected JSR package name",
   );
   assert(
-    npm.version === "0.1.0-beta.3" && npm.version === deno.version,
+    npm.version === "0.1.0-beta.4" && npm.version === deno.version,
     "NPM and JSR release versions differ",
   );
   assert(deno.exports === "./src/index.ts", "JSR does not export source");

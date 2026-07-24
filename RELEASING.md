@@ -10,7 +10,7 @@ scoped name `@bloomler/headlessui-solid`.
    publish with OIDC provenance.
 3. Create a protected GitHub environment named `release`.
 4. Publish the first NPM version interactively with public access and the
-   appropriate prerelease tag.
+   appropriate distribution tag.
 5. In the NPM package settings, configure a GitHub Actions trusted publisher:
    - Owner: `bloomler`
    - Repository: `headlessui-solid`

@@ -7,6 +7,15 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0-beta.4] - 2026-07-24
+
+### Changed
+
+- Publish NPM beta releases on the `latest` distribution tag so unversioned
+  installs receive the newest release.
+- Publish tagged GitHub releases as normal releases.
+- Use unversioned NPM and JSR installation commands in the packaged README.
+
 ## [0.1.0-beta.3] - 2026-07-24
 
 ### Added
