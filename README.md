@@ -36,7 +36,7 @@ identified.
 From NPM:
 
 ```sh
-npm install @bloomler/headlessui-solid@0.1.0-beta.1
+npm install @bloomler/headlessui-solid@0.1.0-beta.2
 ```
 
 Your application must provide matching SolidJS 2 `solid-js` and `@solidjs/web`
@@ -45,7 +45,7 @@ packages. Beta.25 is the currently verified baseline.
 From JSR:
 
 ```sh
-deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.1
+deno add jsr:@bloomler/headlessui-solid@0.1.0-beta.2
 ```
 
 For Deno JSX, use matching SolidJS 2 packages. While Solid 2 is prerelease, the
@@ -93,7 +93,7 @@ export function AccountMenu() {
 JSR:
 
 ```ts
-import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.1";
+import { Button } from "jsr:@bloomler/headlessui-solid@0.1.0-beta.2";
 ```
 
 ## Components

@@ -99,7 +99,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     "Unexpected JSR package name",
   );
   assert(
-    npm.version === "0.1.0-beta.1" && npm.version === deno.version,
+    npm.version === "0.1.0-beta.2" && npm.version === deno.version,
     "NPM and JSR release versions differ",
   );
   assert(deno.exports === "./src/index.ts", "JSR does not export source");

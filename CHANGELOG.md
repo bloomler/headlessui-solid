@@ -7,6 +7,21 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0-beta.2] - 2026-07-24
+
+### Changed
+
+- Publish the NPM package as ESNext ESM builds and one bundled declaration file
+  under `dist`, while keeping the JSR package source-first.
+- Refer to the compatibility targets as Headless UI 2 and Deno 2 in public
+  documentation.
+
+### Fixed
+
+- Exclude the TypeScript source tree from the NPM tarball.
+- Validate the exact NPM packlist and the bundled declarations as package
+  consumers before release.
+
 ## [0.1.0-beta.1] - 2026-07-24
 
 ### Added
