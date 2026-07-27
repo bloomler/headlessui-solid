@@ -40,6 +40,7 @@ export function createBooleanControl(
     defaultChecked,
     reset() {
       if (defaultChecked !== undefined) change(defaultChecked);
+      else if (options.checked() === undefined) change(false);
     },
   };
 }

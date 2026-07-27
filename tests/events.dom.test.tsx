@@ -165,3 +165,26 @@ test("disabled merged handlers prevent cross-realm events", () => {
   expect(event.defaultPrevented).toBe(true);
   expect(calls).toEqual([]);
 });
+
+test('aria-disabled="false" leaves merged pointer handlers enabled', () => {
+  const calls: string[] = [];
+  const event = new MouseEvent("click", { cancelable: true });
+  const merged = mergeEventProps(
+    {
+      "aria-disabled": "false",
+      onClick() {
+        calls.push("consumer");
+      },
+    },
+    {
+      onClick() {
+        calls.push("internal");
+      },
+    },
+  );
+
+  (merged.onClick as (event: MouseEvent) => void)(event);
+
+  expect(event.defaultPrevented).toBe(false);
+  expect(calls).toEqual(["consumer", "internal"]);
+});

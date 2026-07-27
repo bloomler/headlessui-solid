@@ -9,6 +9,7 @@ import {
   createUniqueId,
   type Element,
   flush,
+  merge,
   omit,
   onSettled,
   Show,
@@ -163,14 +164,15 @@ function ListboxRoot<
       );
   const inheritedDisabled = useDisabled();
   const initialDefault = untrack(() => props.defaultValue);
+  const implicitDefault = untrack(() =>
+    props.multiple ? [] as unknown as TType : undefined
+  );
   const initialValue = untrack(() =>
     props.value !== undefined
       ? props.value
       : initialDefault !== undefined
       ? initialDefault
-      : props.multiple
-      ? [] as unknown as TType
-      : undefined
+      : implicitDefault
   );
   const [internalValue, setInternalValue] = createSignal<{ value: TType }>(
     { value: initialValue as TType },
@@ -207,7 +209,9 @@ function ListboxRoot<
     }
     return compare(current as unknown as TActualType, candidate);
   };
-  const commit = (next: TActualType | TActualType[]): void => {
+  const commit = (
+    next: TActualType | TActualType[] | undefined,
+  ): void => {
     const cast = next as unknown as TType;
     if (!controlled()) flush(() => setInternalValue({ value: cast }));
     props.onChange?.(cast);
@@ -315,8 +319,16 @@ function ListboxRoot<
   );
 
   const reset = (): void => {
-    if (initialDefault === undefined) return;
-    commit(initialDefault as unknown as TActualType | TActualType[]);
+    if (initialDefault !== undefined) {
+      commit(initialDefault as unknown as TActualType | TActualType[]);
+    } else if (!controlled()) {
+      commit(
+        implicitDefault as unknown as
+          | TActualType
+          | TActualType[]
+          | undefined,
+      );
+    }
   };
   createEffect(
     () => ({ button: state().buttonElement, formId: props.form }),
@@ -1433,19 +1445,19 @@ export function ListboxSelectedOption<
     context.data.value === undefined || context.data.value === null ||
     (context.data.mode === ValueMode.Multi &&
       Array.isArray(context.data.value) && context.data.value.length === 0);
-  const theirProps = omit(
-    props as AnyProps,
-    "options",
-    "placeholder",
-    "ref",
-  );
-  Object.defineProperty(theirProps, "children", {
-    configurable: true,
-    enumerable: true,
-    get() {
-      return placeholder() ? props.placeholder : props.options;
+  const theirProps = merge(
+    omit(
+      props as AnyProps,
+      "options",
+      "placeholder",
+      "ref",
+    ),
+    {
+      get children() {
+        return placeholder() ? props.placeholder : props.options;
+      },
     },
-  });
+  );
   const ourProps: AnyProps = {
     get ref(): Ref<HTMLElement> {
       return props.ref as Ref<HTMLElement>;

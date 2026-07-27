@@ -7,11 +7,11 @@
   },
   "imports": {
     "@floating-ui/dom": "npm:@floating-ui/dom@1.8.0",
-    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.25",
-    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.25",
-    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.25/",
+    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.26",
+    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.26",
+    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.26/",
     "@bloomler/headlessui-solid": "./dist/index.d.ts",
-    "solid-js": "npm:solid-js@2.0.0-beta.25"
+    "solid-js": "npm:solid-js@2.0.0-beta.26"
   },
   "lock": {
     "frozen": true,

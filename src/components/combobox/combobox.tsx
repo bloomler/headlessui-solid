@@ -183,14 +183,13 @@ function ComboboxRoot<
       id.replace("headlessui-combobox-", "headlessui-combobox-input-");
   const inheritedDisabled = useDisabled();
   const initialDefault = untrack(() => props.defaultValue);
+  const implicitDefault = untrack(() => props.multiple ? [] : undefined);
   const initialValue = untrack(() =>
     props.value !== undefined
       ? props.value
       : initialDefault !== undefined
       ? initialDefault
-      : props.multiple
-      ? []
-      : undefined
+      : implicitDefault
   );
   const [internalValue, setInternalValue] = createSignal<{ value: unknown }>(
     { value: initialValue },
@@ -401,8 +400,8 @@ function ComboboxRoot<
   );
 
   const reset = (): void => {
-    if (initialDefault === undefined) return;
-    commit(initialDefault);
+    if (initialDefault !== undefined) commit(initialDefault);
+    else if (!controlled()) commit(implicitDefault);
   };
   createEffect(
     () => ({

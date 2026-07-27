@@ -40,6 +40,10 @@ function shouldBlockDisabledEvent(eventName: string): boolean {
   return /^(on(?:Click|Pointer|Mouse|Key)(?:Down|Up|Press)?)$/.test(eventName);
 }
 
+function isAriaDisabled(value: unknown): boolean {
+  return value === true || value === "true";
+}
+
 function isMergeSource(property: PropertyKey): boolean {
   return typeof property === "symbol" &&
     property.description === "MERGE_SOURCE";
@@ -93,7 +97,7 @@ export function mergeEventProps<T extends AnyProps[]>(...sources: T): AnyProps {
           // reads do not leak into the renderer's current computation.
           const event = args[0];
           const disabled = Boolean(proxy.disabled) ||
-            Boolean(proxy["aria-disabled"]);
+            isAriaDisabled(proxy["aria-disabled"]);
 
           if (disabled && shouldBlockDisabledEvent(property)) {
             if (isEventLike(event)) event.preventDefault();

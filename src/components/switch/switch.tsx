@@ -338,7 +338,7 @@ function SwitchRoot<
           form={() => props.form}
           name={() => props.name!}
           onReset={control.reset}
-          value={() => props.value || "on"}
+          value={() => props.value ?? "on"}
         />
       </Show>
       {renderElement({

@@ -255,13 +255,13 @@ function RadioGroupRoot<
   };
 
   const reset = (): void => {
-    if (initialDefaultValue === undefined) return;
+    if (initialDefaultValue === undefined && props.value !== undefined) return;
 
     // The native reset default action runs after the `reset` event. Applying
     // the Solid value synchronously here would let that default action uncheck
     // the newly rendered hidden radio afterwards. Preserve observable browser
     // ordering by committing the initial value in the next microtask.
-    queueMicrotask(() => change(initialDefaultValue));
+    queueMicrotask(() => change(initialDefaultValue as TType));
   };
 
   createEffect(

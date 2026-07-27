@@ -2,9 +2,9 @@
   "version": "5",
   "specifiers": {
     "npm:@floating-ui/dom@1.8.0": "1.8.0",
-    "npm:@solidjs/signals@2.0.0-beta.25": "2.0.0-beta.25",
-    "npm:@solidjs/web@2.0.0-beta.25": "2.0.0-beta.25_solid-js@2.0.0-beta.25",
-    "npm:solid-js@2.0.0-beta.25": "2.0.0-beta.25"
+    "npm:@solidjs/signals@2.0.0-beta.26": "2.0.0-beta.26",
+    "npm:@solidjs/web@2.0.0-beta.26": "2.0.0-beta.26_solid-js@2.0.0-beta.26",
+    "npm:solid-js@2.0.0-beta.26": "2.0.0-beta.26"
   },
   "npm": {
     "@floating-ui/core@1.8.0": {
@@ -23,11 +23,11 @@
     "@floating-ui/utils@0.2.12": {
       "integrity": "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="
     },
-    "@solidjs/signals@2.0.0-beta.25": {
-      "integrity": "sha512-Y4oSSCwt1rouvgz9LZxb3Wx2yLFMCjNhad/M2YZxOL4x7+sW6ST2BwI8ZP5vzEtyHUQX+5Pn5ltqkalaHjvlVA=="
+    "@solidjs/signals@2.0.0-beta.26": {
+      "integrity": "sha512-ocwCOuqNbV6R1swAuNP+AF0FoRhxCK8/vhG+XszM0rP8htyYOqsLSXfUy3hVRJHJ/wh7ajN3pZXpv7SPujzD/w=="
     },
-    "@solidjs/web@2.0.0-beta.25_solid-js@2.0.0-beta.25": {
-      "integrity": "sha512-ZuEhEpTXyUU6ERDGuZkShM1VdDoL6ib02pClRNjJmWR3MC5nvPDVXVJxsiUq/xBBQGX5XkzuWIQbE0i51ZsfGA==",
+    "@solidjs/web@2.0.0-beta.26_solid-js@2.0.0-beta.26": {
+      "integrity": "sha512-t0GkzS7wZCuPej8OIQN0+6/uBOHRRhottvAIqnXK4QwiVhCiXr51Bx+sR194INQvvURiP50eprt9TusgKh/Taw==",
       "dependencies": [
         "seroval",
         "seroval-plugins",
@@ -46,8 +46,8 @@
     "seroval@1.5.6": {
       "integrity": "sha512-rVQVWjjSvlINzaQPZH5JFqsqEsIWdTxY3iJZCnTL/5gQbXIRooVZKI60tVCkOVfzcRPejboxO2t0P89dg5mQaA=="
     },
-    "solid-js@2.0.0-beta.25": {
-      "integrity": "sha512-jWyMo3Z+Gv2IX6UvUvwBYSPM8/l9fm3sKM2dORTtC5xFrD4UTyJQBx9YdcawBalGQRXGX2xf+axkyBUUIVsw9Q==",
+    "solid-js@2.0.0-beta.26": {
+      "integrity": "sha512-ffP6D49w3uL7xoh6Pj3GReRjuAIayw9q2lOeeqnRXDuFPMrhdcMlHQ2P0whmXaXTrMTsI2yngRR1nszJIJHwyA==",
       "dependencies": [
         "@solidjs/signals",
         "csstype",
@@ -59,9 +59,9 @@
   "workspace": {
     "dependencies": [
       "npm:@floating-ui/dom@1.8.0",
-      "npm:@solidjs/signals@2.0.0-beta.25",
-      "npm:@solidjs/web@2.0.0-beta.25",
-      "npm:solid-js@2.0.0-beta.25"
+      "npm:@solidjs/signals@2.0.0-beta.26",
+      "npm:@solidjs/web@2.0.0-beta.26",
+      "npm:solid-js@2.0.0-beta.26"
     ]
   }
 }

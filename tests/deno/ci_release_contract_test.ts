@@ -263,7 +263,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
     "Unexpected JSR package name",
   );
   assert(
-    npm.version === "0.1.0" && npm.version === deno.version,
+    npm.version === "0.2.0" && npm.version === deno.version,
     "NPM and JSR release versions differ",
   );
   assert(deno.exports === "./src/index.ts", "JSR does not export source");
@@ -282,7 +282,7 @@ Deno.test("NPM and JSR manifests describe the same public release", async () => 
   );
   for (const peer of ["@solidjs/web", "solid-js"]) {
     assert(
-      npm.peerDependencies?.[peer] === ">=2.0.0-beta.25 <3.0.0",
+      npm.peerDependencies?.[peer] === ">=2.0.0-beta.26 <3.0.0",
       `${peer} does not allow the supported SolidJS 2 release line`,
     );
   }

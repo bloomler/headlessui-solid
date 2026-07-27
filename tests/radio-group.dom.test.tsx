@@ -224,6 +224,70 @@ test("form fields update before onChange and reset to the initial default", asyn
   expect(diagnostics?.stop() ?? []).toEqual([]);
 });
 
+test("an uncontrolled RadioGroup resets to its implicit empty default", async () => {
+  const diagnostics = DEV?.diagnostics.capture();
+  host = document.createElement("div");
+  document.body.append(host);
+  dispose = render(
+    () => (
+      <form>
+        <RadioGroup name="delivery">
+          <Radio value="pickup">Pickup</Radio>
+          <Radio value="delivery">Delivery</Radio>
+        </RadioGroup>
+      </form>
+    ),
+    host,
+  );
+  await settle();
+
+  const form = host.querySelector("form")!;
+  radios()[1].click();
+  await settle();
+  expect(radios()[1].getAttribute("aria-checked")).toBe("true");
+  expect(new FormData(form).get("delivery")).toBe("delivery");
+
+  form.reset();
+  await settle();
+  expect(radios().map((radio) => radio.getAttribute("aria-checked"))).toEqual([
+    "false",
+    "false",
+  ]);
+  expect(new FormData(form).get("delivery")).toBeNull();
+  expect(diagnostics?.stop() ?? []).toEqual([]);
+});
+
+test("RadioGroup preserves explicit falsy form values", async () => {
+  const diagnostics = DEV?.diagnostics.capture();
+  host = document.createElement("div");
+  document.body.append(host);
+  dispose = render(
+    () => (
+      <form>
+        <RadioGroup defaultValue="" name="empty">
+          <Radio value="">Empty</Radio>
+        </RadioGroup>
+        <RadioGroup defaultValue={0} name="zero">
+          <Radio value={0}>Zero</Radio>
+        </RadioGroup>
+        <RadioGroup defaultValue={false} name="false">
+          <Radio value={false}>False</Radio>
+        </RadioGroup>
+      </form>
+    ),
+    host,
+  );
+  await settle();
+
+  const form = host.querySelector("form")!;
+  expect(Object.fromEntries(new FormData(form))).toEqual({
+    empty: "",
+    false: "0",
+    zero: "0",
+  });
+  expect(diagnostics?.stop() ?? []).toEqual([]);
+});
+
 test("disabled groups suppress selection and successful form data", async () => {
   const diagnostics = DEV?.diagnostics.capture();
   let changes = 0;

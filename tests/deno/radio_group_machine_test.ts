@@ -92,10 +92,11 @@ Deno.test("RadioGroup roving tabindex chooses checked then first enabled", () =>
   );
 });
 
-Deno.test("RadioGroup form fallback retains upstream truthiness semantics", () => {
+Deno.test("RadioGroup form fallback preserves explicit falsy values", () => {
   strictEqual(radioFormValue(undefined), "on");
   strictEqual(radioFormValue(null), "on");
-  strictEqual(radioFormValue(false), "on");
-  strictEqual(radioFormValue(0), "on");
+  strictEqual(radioFormValue(false), false);
+  strictEqual(radioFormValue(0), 0);
+  strictEqual(radioFormValue(""), "");
   strictEqual(radioFormValue("pickup"), "pickup");
 });

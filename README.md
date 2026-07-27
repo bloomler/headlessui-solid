@@ -14,15 +14,15 @@ exports and public type contracts.
 
 ## Motivation
 
-I have Tailwind Plus and I like the Catalyst & Application UI design,
-but also don't want to use React.
+I have Tailwind Plus and I like the Catalyst & Application UI design, but also
+don't want to use React.
 
 ## Solid compatibility
 
-This release was fully tested with SolidJS `2.0.0-beta.25`. Later
-SolidJS 2 betas, release candidates and stable versions may also work and the
-NPM peer range permits users to test them without an override. Those versions
-are not yet verified or guaranteed to be compatible.
+This release was fully tested with SolidJS `2.0.0-beta.26`. Later SolidJS 2
+betas, release candidates and stable versions may also work and the NPM peer
+range permits users to test them without an override. Those versions are not yet
+verified or guaranteed to be compatible.
 
 If a Solid release introduces a breaking change, please open a bug report with
 the `@bloomler/headlessui-solid`, `solid-js` and `@solidjs/web` versions and a
@@ -38,7 +38,7 @@ npm i @bloomler/headlessui-solid
 ```
 
 Your application must provide matching SolidJS 2 `solid-js` and `@solidjs/web`
-packages. Beta.25 is the currently verified baseline.
+packages. Beta.26 is the currently verified baseline.
 
 From JSR:
 

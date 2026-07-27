@@ -7,6 +7,24 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-27
+
+### Changed
+
+- Update the coordinated SolidJS 2 development, test, and peer-dependency
+  baseline to `2.0.0-beta.26`.
+
+### Fixed
+
+- Interpret the ARIA boolean string `aria-disabled="false"` as enabled when
+  composing event handlers.
+- Preserve selected-option children supplied through merged reactive props.
+- Rebind Checkbox and Switch reset listeners when their form owner changes.
+- Restore implicit uncontrolled defaults on form reset for Checkbox, Switch,
+  Listbox, Combobox, and RadioGroup.
+- Preserve explicit empty-string, zero, and false form values instead of
+  replacing them with `"on"`.
+
 ## [0.1.0] - 2026-07-25
 
 ### Changed

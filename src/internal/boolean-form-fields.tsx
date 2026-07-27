@@ -25,10 +25,15 @@ export function BooleanFormFields(props: BooleanFormFieldsProps): Element {
   );
 
   createEffect(
-    () => resolver()?.form ?? null,
-    (form) => {
-      if (!form) return;
+    () => ({ element: resolver(), formId: props.form() }),
+    ({ element, formId }) => {
+      if (!element) return;
+      const candidate = formId
+        ? element.ownerDocument.getElementById(formId)
+        : element.closest("form");
+      if (!candidate || candidate.tagName !== "FORM") return;
 
+      const form = candidate as HTMLFormElement;
       const handleReset = () => props.onReset();
       form.addEventListener("reset", handleReset);
       return () => form.removeEventListener("reset", handleReset);

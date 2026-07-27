@@ -1,6 +1,6 @@
 {
   "name": "@bloomler/headlessui-solid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "exports": "./src/index.ts",
   "publish": {
     "include": [
@@ -24,9 +24,9 @@
   },
   "imports": {
     "@floating-ui/dom": "npm:@floating-ui/dom@1.8.0",
-    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.25",
-    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.25",
-    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.25/",
+    "@solidjs/signals": "npm:@solidjs/signals@2.0.0-beta.26",
+    "@solidjs/web": "npm:@solidjs/web@2.0.0-beta.26",
+    "@solidjs/web/": "npm:/@solidjs/web@2.0.0-beta.26/",
     "@vitest/browser": "npm:@vitest/browser@4.1.10",
     "@vitest/browser-playwright": "npm:@vitest/browser-playwright@4.1.10",
     "@bloomler/headlessui-solid": "./src/index.ts",
@@ -34,7 +34,7 @@
     "npm-packlist": "npm:npm-packlist@10.0.4",
     "playwright": "npm:playwright@1.61.1",
     "rolldown-plugin-dts": "npm:rolldown-plugin-dts@0.27.13",
-    "solid-js": "npm:solid-js@2.0.0-beta.25",
+    "solid-js": "npm:solid-js@2.0.0-beta.26",
     "typescript": "npm:typescript@6.0.3",
     "vite": "npm:vite@8.1.5",
     "vite-plugin-solid": "npm:vite-plugin-solid@3.0.0-next.16",

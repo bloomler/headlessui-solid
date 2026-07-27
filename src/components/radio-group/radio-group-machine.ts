@@ -52,5 +52,5 @@ export function resolveRadioTabIndex(options: {
 }
 
 export function radioFormValue(value: unknown): unknown {
-  return value ? value : "on";
+  return value ?? "on";
 }

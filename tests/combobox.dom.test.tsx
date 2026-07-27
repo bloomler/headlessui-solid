@@ -597,6 +597,82 @@ test("multiple option presses toggle values, remain open, serialize, and reset",
   expect(diagnostics?.stop() ?? []).toEqual([]);
 });
 
+test("uncontrolled Comboboxes reset to their implicit single and multi defaults", async () => {
+  const diagnostics = DEV?.diagnostics.capture();
+  const root = mount(() => (
+    <form id="implicit-combobox-form">
+      <Combobox<string> name="single">
+        {(slot) => (
+          <>
+            <output id="single-combobox-value">
+              {slot.value ?? "none"}
+            </output>
+            <ComboboxInput />
+            <ComboboxButton id="single-combobox-button">Single</ComboboxButton>
+            <ComboboxOptions static modal={false}>
+              <ComboboxOption id="single-combobox-option" value="alpha">
+                Alpha
+              </ComboboxOption>
+            </ComboboxOptions>
+          </>
+        )}
+      </Combobox>
+      <Combobox<string, true> multiple name="multiple">
+        {(slot) => (
+          <>
+            <output id="multi-combobox-value">
+              {slot.value.join(",") || "none"}
+            </output>
+            <ComboboxInput />
+            <ComboboxButton id="multi-combobox-button">
+              Multiple
+            </ComboboxButton>
+            <ComboboxOptions static modal={false}>
+              <ComboboxOption id="multi-combobox-option" value="beta">
+                Beta
+              </ComboboxOption>
+            </ComboboxOptions>
+          </>
+        )}
+      </Combobox>
+    </form>
+  ));
+  await settle();
+
+  root.querySelector<HTMLButtonElement>("#single-combobox-button")!.click();
+  root.querySelector("#single-combobox-option")!.dispatchEvent(
+    new MouseEvent("mousedown", { bubbles: true, button: 0, cancelable: true }),
+  );
+  root.querySelector<HTMLButtonElement>("#multi-combobox-button")!.click();
+  root.querySelector("#multi-combobox-option")!.dispatchEvent(
+    new MouseEvent("mousedown", { bubbles: true, button: 0, cancelable: true }),
+  );
+  await settle();
+
+  const form = root.querySelector<HTMLFormElement>("#implicit-combobox-form")!;
+  expect(root.querySelector("#single-combobox-value")?.textContent).toBe(
+    "alpha",
+  );
+  expect(root.querySelector("#multi-combobox-value")?.textContent).toBe(
+    "beta",
+  );
+  expect([...new FormData(form).entries()]).toEqual([
+    ["single", "alpha"],
+    ["multiple[0]", "beta"],
+  ]);
+
+  form.reset();
+  await settle();
+  expect(root.querySelector("#single-combobox-value")?.textContent).toBe(
+    "none",
+  );
+  expect(root.querySelector("#multi-combobox-value")?.textContent).toBe(
+    "none",
+  );
+  expect([...new FormData(form).entries()]).toEqual([]);
+  expect(diagnostics?.stop() ?? []).toEqual([]);
+});
+
 test("Solid reactive ownership avoids controlled-mode warnings", async () => {
   const diagnostics = DEV?.diagnostics.capture();
   const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
